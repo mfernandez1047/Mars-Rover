@@ -158,7 +158,6 @@ function move(rover, commands){
        switch (letter) {
          case "f":
            moveForward(rover);
-           console.log("Test2");
            break;
          case "r":
            turnRight(rover);
@@ -172,5 +171,9 @@ function move(rover, commands){
        }
      }
    }
+
+   rover.travelLog.forEach(function(element){
+     console.log(element);
+   });
 
 }
