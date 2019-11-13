@@ -1,179 +1,99 @@
+var rover1 = {
+  direction: "N",
+  positionX: 0,
+  positionY: 0,
+  travelLog: []
+};
 
-/*
-    Project - MARS ROVER KATA
-    Author - Matthew Larrubia
+ function turnLeft(rover){
+ switch(rover.direction){
 
-    Implementations:
-    + --------------------------------- +
-    |   * The Rover Object:    Success  |
-    |   * Turning The Rover:   Success  |
-    |   * Moving the Rover:    Success  |
-    |   * Commands:            Success  |
-    |   * Tracking:            Success  |
-    |   * Enforce Boundaries:  Success  |
-    |   * Moving Backwards:    Success  |
-    |   * Validate Inputs:     Success  |
-    |   * Obstacles:           NA       |
-    |   * Other Rovers:        NA       |
-    + --------------------------------- +
-*/
-
-
-// Rover Object Goes Here
-// ======================
-  var rover = {
-    direction: "N",
-    x: 0,
-    y: 0,
-    travelLog: []
-  };
-// ======================
-
-
-
-function turnLeft(rover){
-  console.log("turnLeft was called!");
-
-  switch(rover.direction){
-    case "N":
-      rover.direction = "W";
-      break;
-    case "S":
-      rover.direction = "E";
-      break;
-    case "E":
-      rover.direction = "N";
-      break;
-    case "W":
-      rover.direction = "S";
-      break;
-  }
-
-
-}
-
-function turnRight(rover){
-  console.log("turnRight was called!");
-
-  switch(rover.direction){
-    case "N":
-      rover.direction = "E";
-      break;
-    case "S":
-      rover.direction = "W";
-      break;
-    case "E":
-      rover.direction = "S";
-      break;
-    case "W":
-      rover.direction = "N";
-      break;
-  }
-}
-
-function moveForward(rover){
-  console.log("moveForward was called");
-
-  let coordinate = "" + rover.x + "," + rover.y;
-  rover.travelLog.push(coordinate);
-
-
-  // Added enforced boundaries
-  switch(rover.direction){
-    case "N":
-      rover.y -= 1;
-      if(rover.y < 0) {
-        rover.y = 0;
-      }
-      break;
-    case "S":
-      rover.y += 1;
-      if(rover.y > 10) {
-        rover.y = 10;
-      }
-      break;
-    case "E":
-      rover.x += 1;
-      if(rover.x > 10) {
-        rover.x = 10;
-      }
-      break;
-    case "W":
-      rover.x -= 1;
-      if(rover.x < 0) {
-        rover.x = 0;
-      }
-      break;
-  }
-}
-
-function moveBackwards(rover){
-  console.log("Move Backwards was called");
-
-  let coordinate = "" + rover.x + "," + rover.y;
-  rover.travelLog.push(coordinate);
-
-  switch(rover.direction){
-    case "N":
-      rover.y += 1;
-      if(rover.y > 10) {
-        rover.y = 10;
-      }
-      break;
-    case "S":
-      rover.y -= 1;
-      if(rover.y < 0) {
-        rover.y = 0;
-      }
-      break;
-    case "E":
-      rover.x -= 1;
-      if(rover.x < 0) {
-        rover.x = 0;
-      }
-      break;
-    case "W":
-      rover.x += 1;
-      if(rover.x > 10) {
-        rover.x = 10;
-      }
-      break;
-  }
-
+   case 'N': rover.direction='W'; break;
+   case 'W': rover.direction='S'; break;
+   case 'S': rover.direction='E'; break;
+   case 'E': rover.direction='N'; break;
+ }
+     console.log("turnLeft was called!");
 }
 
 
-/*
-   | While using the includes method I had difficulty returning true for true statements. After reading the
-   | documentation, "The includes() method determines whether a string contains the characters of a specified string.
-   | This method returns true if the string contains the characters, and false if not." I realized I had the order
-   | reversed and was checking if the character contains the string.
- */
 
-function move(rover, commands){
-   let temp = commands;
-   for(let i = 0; i < temp.length; i++){
-     letter = temp.charAt(i);
-      if("frlb".includes(letter)) {
-       switch (letter) {
-         case "f":
-           moveForward(rover);
-           break;
-         case "r":
-           turnRight(rover);
-           break;
-         case "l":
-           turnLeft(rover);
-           break;
-         case "b":
-           moveBackwards(rover);
-           break;
+ function turnRight(rover){
+ switch(rover.direction){
+
+   case 'N': rover.direction='E'; break;
+   case 'E': rover.direction='S'; break;
+   case 'S': rover.direction='W'; break;
+   case 'W': rover.direction='N'; break;
+ }
+   console.log("turnRight was called!");
+}
+
+
+ function moveForward(rover){
+  switch(rover.direction){
+   case 'N': 
+       if(rover.positionY <= 0 || rover.positionY > 10){
+         console.log("Rover reached limit grid");
+       }else{
+         rover.positionY-=1;
        }
-     }
+      break;
+   
+   case 'E':
+      if(rover.positionX < 0 || rover.positionX > 10){
+         console.log("Rover reached limit grid");
+       }else{   
+         rover.positionX+=1;
+       }
+       break;
+   
+   case 'S':
+      if(rover.positionY < 0 || rover.positionY > 10){
+         console.log("Rover reached limit grid");
+      }else {
+         rover.positionY+=1;
+      }
+     break;
+     
+   case 'W':
+      if(rover.positionX < 0 || rover.positionX > 10){
+         console.log("Rover reached limit grid");
+      }else {
+           rover.positionX-=1;
+      }
+     break;
+  }
+  
+  console.log("moveForward was called");
+  console.log("Rover is here: " + [rover.positionX, rover.positionY]);
+ }
+
+
+ function commandsRover(rover){
+  var route = prompt("Insert the commands to move the Rover: f: forward, r: right, l: left");
+
+  if(route.indexOf('f') >= 0 || route.indexOf('r') >= 0 || route.indexOf('l') >= 0 ){
+  var newRoute = route.split("");
+  console.log("Rover's route: " + route);
+  for(var i = 0;  i < newRoute.length; i++){
+    
+     switch(route[i]){
+     case 'l': turnLeft(rover); break;
+     case 'r': turnRight(rover); break;
+     case 'f': moveForward(rover); break;
+    }
+    
+     var position = [rover1.positionX, rover1.positionY];
+     rover1.travelLog.push(position);
+     console.log("Rover's current location: " + position);
+ 
    }
-
-   rover.travelLog.forEach(function(element){
-     console.log(element);
-   });
-
+  
+  }else {
+    alert("Enter a valid command!!");
+    commandsRover(rover1);
+  }
 }
+commandsRover(rover1);
+ 
